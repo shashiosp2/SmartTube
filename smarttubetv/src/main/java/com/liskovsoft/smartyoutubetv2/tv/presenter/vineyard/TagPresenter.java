@@ -39,7 +39,11 @@ public class TagPresenter extends LongClickPresenter {
         };
 
         cardView.setFocusable(true);
-        cardView.setFocusableInTouchMode(true);
+        if (Helpers.isAndroidTV(parent.getContext())) {
+            cardView.setFocusableInTouchMode(true);
+        } else {
+            cardView.setFocusableInTouchMode(false);
+        }
         updateCardBackgroundColor(cardView, false);
         updateCardTextColor(cardView, false);
         //if (VERSION.SDK_INT >= 23 && MainUIData.instance(parent.getContext()).isUiTweakEnabled(MainUIData.UI_TWEAK_ROUNDED_CORNERS)) {

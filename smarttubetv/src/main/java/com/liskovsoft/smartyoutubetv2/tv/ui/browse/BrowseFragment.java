@@ -128,14 +128,9 @@ public class BrowseFragment extends BrowseSupportFragment implements BrowseView 
                     long headerId = row.getHeaderItem().getId();
                     int newPosition = indexOf(headerId);
 
-                    if (getHeadersSupportFragment().getSelectedPosition() != newPosition) {
-                        // touch screen support
-                        getHeadersSupportFragment().setSelectedPosition(newPosition);
-                    } else {
-                        // update section when clicked or pressed
-                        mBrowsePresenter.onSectionFocused((int) headerId);
-                        startHeadersTransitionSafe(false);
-                    }
+                    getHeadersSupportFragment().setSelectedPosition(newPosition);
+                    mBrowsePresenter.onSectionFocused((int) headerId);
+                    startHeadersTransitionSafe(false);
                 }
         );
 

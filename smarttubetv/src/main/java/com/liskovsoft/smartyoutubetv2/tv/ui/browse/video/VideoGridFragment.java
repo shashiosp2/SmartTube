@@ -1,5 +1,6 @@
 package com.liskovsoft.smartyoutubetv2.tv.ui.browse.video;
 
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.widget.Toast;
 import androidx.annotation.Nullable;
@@ -85,6 +86,17 @@ public class VideoGridFragment extends GridFragment implements VideoSection {
 
         for (VideoGroup group : copyArray) {
             update(group);
+        }
+    }
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+
+        if (getGridPresenter() != null && getContext() != null) {
+            getGridPresenter().setNumberOfColumns(
+                    GridFragmentHelper.getMaxColsNum(getContext(), isShorts() ? R.dimen.shorts_card_width : R.dimen.card_width, mVideoGridScale)
+            );
         }
     }
 

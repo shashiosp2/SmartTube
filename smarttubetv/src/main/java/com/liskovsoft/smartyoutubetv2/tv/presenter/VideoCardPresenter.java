@@ -80,7 +80,11 @@ public class VideoCardPresenter extends LongClickPresenter {
         cardView.enableTextAutoScroll(isCardTextAutoScrollEnabled);
         cardView.setTextScrollSpeed(cardTextScrollSpeed);
         cardView.setFocusable(true);
-        cardView.setFocusableInTouchMode(true);
+        if (Helpers.isAndroidTV(context)) {
+            cardView.setFocusableInTouchMode(true);
+        } else {
+            cardView.setFocusableInTouchMode(false);
+        }
         cardView.enableBadge(isBadgeEnabled());
         cardView.enableTitle(isTitleEnabled());
         cardView.enableContent(isContentEnabled());

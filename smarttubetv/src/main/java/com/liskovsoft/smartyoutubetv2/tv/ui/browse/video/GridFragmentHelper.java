@@ -24,7 +24,7 @@ public class GridFragmentHelper {
     private static final Runnable sInvalidate = GridFragmentHelper::invalidate;
     private static final int MIN_ADAPTER_SIZE = 6;
 
-    private static void invalidate() {
+    public static void invalidate() {
         sCardDimensPx.clear();
         sMaxColsNum.clear();
     }
@@ -65,24 +65,29 @@ public class GridFragmentHelper {
         Resources res = context.getResources();
         int displayWidthPx;
 
+        // On TV, devices usually assume a fixed landscape layout.
+        // On phones/tablets or other devices, adapt to current orientation.
+        boolean isTv = Helpers.isAndroidTV(context);
+
         // Take into the account screen orientation (e.g. when running on phone)
         if (VERSION.SDK_INT >= 30 && Helpers.isCutoutMode(context)) {
             // Take into the account screen cutout/notch area
             Rect bounds = context.getSystemService(WindowManager.class)
                     .getCurrentWindowMetrics().getBounds();
 
-            displayWidthPx = Math.max(bounds.width(), bounds.height());
+            displayWidthPx = isTv ? Math.max(bounds.width(), bounds.height()) : bounds.width();
         } else {
             // Use regular display metrics
             DisplayMetrics displayMetrics = res.getDisplayMetrics();
-            displayWidthPx = Math.max(displayMetrics.widthPixels, displayMetrics.heightPixels);
+            displayWidthPx = isTv ? Math.max(displayMetrics.widthPixels, displayMetrics.heightPixels) : displayMetrics.widthPixels;
         }
 
         float cardWidthPx = res.getDimensionPixelSize(cardWidthResId) * cardScale;
         float cardSpacingPx = res.getDimensionPixelSize(R.dimen.grid_item_horizontal_spacing);
 
         // Get into consideration space from grid sides
-        return (displayWidthPx - displayWidthPx * 0.1f * uiScale) / (cardWidthPx + cardSpacingPx);
+        float cols = (displayWidthPx - displayWidthPx * 0.1f * uiScale) / (cardWidthPx + cardSpacingPx);
+        return Math.max(1.0f, cols);
     }
 
     public static Pair<Integer, Integer> getCardDimensPx(Context context, int cardWidthResId, int cardHeightResId, float cardScale) {
@@ -114,7 +119,7 @@ public class GridFragmentHelper {
 
         // Get into consideration the space from the grid sides
         float colsNum = getMaxColsNumFloat(context, cardWidthResId, cardScale);
-        int colsNumRounded = (int) colsNum;
+        int colsNumRounded = Math.max(1, (int) colsNum);
         float colsReminder = (colsNum - colsNumRounded) / colsNumRounded;
 
         float width = cardWidthPx + cardWidthPx * colsReminder;

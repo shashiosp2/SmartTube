@@ -8,6 +8,7 @@ import android.widget.TextView;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.leanback.widget.Presenter;
+import com.liskovsoft.sharedutils.helpers.Helpers;
 import com.liskovsoft.smartyoutubetv2.tv.R;
 
 public class GridItemPresenter extends Presenter {
@@ -27,7 +28,11 @@ public class GridItemPresenter extends Presenter {
 
         view.setLayoutParams(new ViewGroup.LayoutParams(width, height));
         view.setFocusable(true);
-        view.setFocusableInTouchMode(true);
+        if (Helpers.isAndroidTV(view.getContext())) {
+            view.setFocusableInTouchMode(true);
+        } else {
+            view.setFocusableInTouchMode(false);
+        }
         view.setBackgroundColor(ContextCompat.getColor(parent.getContext(),
                 R.color.card_default_background));
         view.setTextColor(Color.WHITE);

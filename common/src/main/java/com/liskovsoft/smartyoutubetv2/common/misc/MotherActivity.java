@@ -243,6 +243,7 @@ public class MotherActivity extends FragmentActivity {
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
 
+        sCachedDisplayMetrics = null;
         applyCustomConfig();
     }
 

@@ -8,6 +8,7 @@ import android.view.KeyEvent;
 
 import androidx.fragment.app.Fragment;
 
+import com.liskovsoft.sharedutils.helpers.Helpers;
 import com.liskovsoft.sharedutils.helpers.KeyHelpers;
 import com.liskovsoft.sharedutils.mylogger.Log;
 import com.liskovsoft.smartyoutubetv2.common.app.presenters.PlaybackPresenter;
@@ -49,7 +50,7 @@ public class AppDialogActivity extends MotherActivity {
         // Error happen only on Android O (api 26) when you set "portrait" orientation in manifest
         // So, to fix the problem, set orientation here instead of manifest
         // More info: https://stackoverflow.com/questions/48072438/java-lang-illegalstateexception-only-fullscreen-opaque-activities-can-request-o
-        if (VERSION.SDK_INT != 26) {
+        if (Helpers.isAndroidTV(this) && VERSION.SDK_INT != 26) {
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
         }
     }

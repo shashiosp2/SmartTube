@@ -1,5 +1,6 @@
 package com.liskovsoft.smartyoutubetv2.tv.ui.browse.video;
 
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Toast;
@@ -212,6 +213,16 @@ public class MultiVideoGridFragment extends MultiGridFragment implements VideoSe
         }
     }
 
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+
+        if (getGridPresenter2() != null && getContext() != null) {
+            int maxColsNum = GridFragmentHelper.getMaxColsNum(getContext(), R.dimen.card_width, mVideoGridScale);
+            getGridPresenter2().setNumberOfColumns(Math.max(1, maxColsNum - 1));
+        }
+    }
+
     private void setupAdapter() {
         // Left vertical list of channels
         VerticalGridPresenter presenter1 = new CustomVerticalGridPresenter(R.layout.lb_vertical_grid1, R.id.browse_grid1);
@@ -222,7 +233,7 @@ public class MultiVideoGridFragment extends MultiGridFragment implements VideoSe
         VerticalGridPresenter presenter2 = new CustomVerticalGridPresenter(R.layout.lb_vertical_grid2, R.id.browse_grid2);
         presenter2.enableChildRoundedCorners(getMainUIData().isUiTweakEnabled(MainUIData.UI_TWEAK_ROUNDED_CORNERS));
         int maxColsNum = GridFragmentHelper.getMaxColsNum(getContext(), R.dimen.card_width, mVideoGridScale);
-        presenter2.setNumberOfColumns(Math.max(maxColsNum, 1) - 1);
+        presenter2.setNumberOfColumns(Math.max(1, maxColsNum - 1));
 
         setGridPresenter1(presenter1);
         setGridPresenter2(presenter2);
